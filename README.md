@@ -1,15 +1,15 @@
-### Tabunan
+## Tabunan
 
 Helping a relative build a website for their business.
 
-## Business Objective
+### Business Objective
 - To create a website to help business owner of _Tabunan_ handle reservations.
 - To allow user payment through an online payment service.
 
-## Developer Objective
+### Developer Objective
 - To learn how to use ReactJs library.
 
-## Running the app
+### Running the app
 ```
 pnpm run dev
 ```
