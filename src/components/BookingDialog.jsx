@@ -1,6 +1,9 @@
-import {useLayoutEffect, useRef} from "react";
+"use client";
+
+import {forwardRef} from "react";
 import BookingForm from "./BookingForm";
 import useBookingContext from "@/contexts/BookingContext";
+import Button from "./Button";
 
 /**
  * @typedef BookingDialogProps
@@ -10,20 +13,31 @@ import useBookingContext from "@/contexts/BookingContext";
 /**
  * @param {BookingDialogProps} props
  */
-export default function BookingDialog({...props}) {
-  const dialog = useRef();
-
+const BookingDialog = forwardRef(function BookingDialog(props, ref) {
   const {name, description} = useBookingContext();
 
-  useLayoutEffect(() => dialog.current.showModal(), [dialog]);
+  function handleCancel() {
+    ref.current?.close();
+  }
 
   return (
-    <dialog className="rounded" {...props} ref={dialog}>
+    <dialog ref={ref} className="rounded" {...props}>
       <article className="p-2">
         <h1>{name}</h1>
         <p>{description}</p>
-        <BookingForm></BookingForm>
+        <BookingForm>
+          <div className="float-right">
+            <Button>
+              <span className="italic">Continue</span>
+            </Button>
+            <Button onClick={handleCancel}>
+              <span className="italic">Cancel</span>
+            </Button>
+          </div>
+        </BookingForm>
       </article>
     </dialog>
   );
-}
+});
+
+export default BookingDialog;

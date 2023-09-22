@@ -1,19 +1,18 @@
 "use client";
 
-import {useState} from "react";
 import Button from "./Button";
 import BookingDialog from "./BookingDialog";
 import {BookingContext} from "@/contexts/BookingContext";
+import {useRef} from "react";
 
 /**
  * @type {name: string, description: string}} BookingItemProps
  * @param {BookingItemProps} props
  */
 export default function BookingItem({name, description}) {
-  const [isDialogOpen, setDialogOpen] = useState(false);
-
+  const ref = useRef(null);
   function handleClick() {
-    setDialogOpen(!isDialogOpen);
+    ref.current?.showModal();
   }
 
   return (
@@ -25,7 +24,7 @@ export default function BookingItem({name, description}) {
           <div>
             <Button onClick={handleClick}>Book</Button>
           </div>
-          <BookingDialog open={isDialogOpen}></BookingDialog>
+          <BookingDialog ref={ref}></BookingDialog>
         </article>
       </li>
     </BookingContext.Provider>
