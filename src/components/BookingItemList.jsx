@@ -19,7 +19,7 @@ export default function BookingItemList() {
     <ul>
       {items.map(({key, ...props}) => (
         <Fragment key={key}>
-          <BookingItem {...props}></BookingItem>
+          <BookingItem id={key} {...props}></BookingItem>
         </Fragment>
       ))}
     </ul>

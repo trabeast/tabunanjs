@@ -1,18 +1,24 @@
 "use client";
 
 import Button from "./Button";
-import BookingDialog from "./BookingDialog";
 import {BookingContext} from "@/contexts/BookingContext";
-import {useRef} from "react";
+import {useRouter} from "next/navigation";
 
 /**
- * @type {name: string, description: string}} BookingItemProps
+ * @typedef {Object} BookingItemProps
+ * @property {string} id
+ * @property {string} name
+ * @property {string} description
+ */
+
+/**
  * @param {BookingItemProps} props
  */
-export default function BookingItem({name, description}) {
-  const ref = useRef(null);
+export default function BookingItem({id, name, description}) {
+  const router = useRouter();
+
   function handleClick() {
-    ref.current?.showModal();
+    router.push(`/booking/${id}`);
   }
 
   return (
@@ -24,7 +30,6 @@ export default function BookingItem({name, description}) {
           <div>
             <Button onClick={handleClick}>Book</Button>
           </div>
-          <BookingDialog ref={ref}></BookingDialog>
         </article>
       </li>
     </BookingContext.Provider>
