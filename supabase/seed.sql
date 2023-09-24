@@ -21,3 +21,9 @@ values (
   E'- 2 bedrooms with 1 queen bed each
   - PHP 5,000 per night'
 );
+
+insert into cabin_reservations (cabin_id, dates)
+values(
+  (select id from cabins where name = 'Wrath'),
+  '[2023-10-01 00:00, 2023-10-05 00:00]'
+);
