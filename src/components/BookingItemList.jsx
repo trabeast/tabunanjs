@@ -1,25 +1,36 @@
 import {Fragment} from "react";
 import BookingItem from "./BookingItem";
+import {serverComponentClient} from "./helpers/client";
 
-export default function BookingItemList() {
-  const items = [
-    {
-      key: "1",
-      name: "Item 1",
-      description: "This is an item that came first",
-    },
-    {
-      key: "2",
-      name: "Item 2",
-      description: "This is an item that came second",
-    },
-  ];
+/**
+ * @typedef {Object} Cabin
+ * @property {number} id
+ * @property {string} name
+ * @property {string} subname
+ * @property {string} description
+ *
+ * @typedef {Object} FetchCabinsResponse
+ * @property {Cabin[]} data
+ * @property {Error} error
+ *
+ * @returns {Promise<FetchCabinsResponse>}
+ */
+function fetchCabins() {
+  return serverComponentClient.from("cabins").select();
+}
+
+export default async function BookingItemList() {
+  const {data, error} = await fetchCabins();
 
   return (
     <ul>
-      {items.map(({key, ...props}) => (
-        <Fragment key={key}>
-          <BookingItem id={key} {...props}></BookingItem>
+      {data?.map(({id, ...props}) => (
+        <Fragment key={id}>
+          <BookingItem
+            id={id}
+            shortDescription={props.short_description}
+            {...props}
+          ></BookingItem>
         </Fragment>
       ))}
     </ul>
