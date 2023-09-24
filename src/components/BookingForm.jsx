@@ -3,17 +3,24 @@
 import {DayPicker} from "react-day-picker";
 import Button from "./Button";
 import Input from "./Input";
-import {useRef, useState, useReducer} from "react";
+import {useRef, useReducer} from "react";
 import {useRouter} from "next/navigation";
-import {isDateRange, DateRange} from "react-day-picker";
+import {DateRange} from "react-day-picker";
 import {addDays} from "date-fns";
-import {isBefore, isAfter} from "date-fns";
+import disableDatesForInvalidRange from "./helpers/disableDatesForInvalidRange";
 
-const today = new Date();
-const initDisabled = [
-  {before: today},
-  {from: addDays(today, 3), to: addDays(today, 5)},
-];
+/** @returns {Date} */
+function getToday() {
+  return new Date();
+}
+
+/** @returns {Matcher[]} */
+function getInitDisabled() {
+  return [
+    {before: getToday()},
+    {from: addDays(getToday(), 3), to: addDays(getToday(), 5)},
+  ];
+}
 
 /**
  * @typedef BookingFormState
@@ -24,12 +31,15 @@ const initDisabled = [
  */
 const initState = {
   selected: undefined,
-  disabled: initDisabled,
+  disabled: getInitDisabled(),
 };
 
 /**
+ * @typedef ActionType
+ * @property {"SELECT"} type
+ *
  * @typedef Action
- * @property {string} type
+ * @property {ActionType} type
  * @property {DateRange} payload
  *
  * @param {BookingFormState} state
@@ -42,10 +52,13 @@ function reducer(state, action) {
       ...state,
       selected: action.payload,
       disabled: !action.payload
-        ? initDisabled
+        ? getInitDisabled()
         : [
-            ...initDisabled,
-            ...disableDatesForInvalidRange(initDisabled, action.payload.from),
+            ...getInitDisabled(),
+            ...disableDatesForInvalidRange(
+              getInitDisabled(),
+              action.payload.from,
+            ),
           ],
     };
 
@@ -98,7 +111,6 @@ export default function BookingForm(props) {
         mode="range"
         selected={state.selected}
         onSelect={handleSelect}
-        showOutsideDays
         disabled={state.disabled}
       ></DayPicker>
       <br />
@@ -113,39 +125,4 @@ export default function BookingForm(props) {
       </div>
     </form>
   );
-}
-
-/**
- * Creates a list of dates that are invalid 'to'/'from' of selected range.
- * Valid selected range only contains dates that are not disabled.
- *
- * @param {Matcher[]} disabled
- * @param {Date} from
- * @returns {Matcher[]}
- */
-function disableDatesForInvalidRange(disabled, from) {
-  const otherDays = [];
-  let earliest = undefined;
-  let latest = undefined;
-
-  disabled.filter(isDateRange).forEach((range) => {
-    if (
-      range.from &&
-      range.from < from &&
-      (!latest || isAfter(range.from, latest))
-    )
-      latest = range.from;
-
-    if (
-      range.to &&
-      range.to > from &&
-      (!earliest || isBefore(range.to, earliest))
-    )
-      earliest = range.to;
-  });
-
-  if (latest) otherDays.push({before: latest});
-  if (earliest) otherDays.push({after: earliest});
-
-  return otherDays;
 }
