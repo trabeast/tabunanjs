@@ -80,14 +80,6 @@ export default function BookingForm(props) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  function handleSelect(range) {
-    dispatch({type: "SELECT", payload: range});
-  }
-
-  function handleCancel() {
-    router.back();
-  }
-
   return (
     <form
       onSubmit={(evt) => evt.preventDefault()}
@@ -110,7 +102,7 @@ export default function BookingForm(props) {
       <DayPicker
         mode="range"
         selected={state.selected}
-        onSelect={handleSelect}
+        onSelect={(selected) => dispatch({type: "SELECT", payload: selected})}
         disabled={state.disabled}
       ></DayPicker>
       <br />
@@ -119,7 +111,7 @@ export default function BookingForm(props) {
         <Button>
           <span>Continue</span>
         </Button>
-        <Button onClick={handleCancel}>
+        <Button onClick={() => router.back()}>
           <span>Cancel</span>
         </Button>
       </div>

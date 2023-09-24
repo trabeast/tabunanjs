@@ -26,10 +26,6 @@ export default function BookingItem({
 }) {
   const router = useRouter();
 
-  function handleClick() {
-    router.push(`/booking/${id}`);
-  }
-
   return (
     <BookingContextProvider value={{name, shortDescription, description}}>
       <li>
@@ -38,7 +34,7 @@ export default function BookingItem({
           <h2>{shortDescription}</h2>
           <p className="whitespace-pre-line">{description}</p>
           <div>
-            <Button onClick={handleClick}>Book</Button>
+            <Button onClick={() => router.push(`/booking/${id}`)}>Book</Button>
           </div>
         </article>
       </li>
