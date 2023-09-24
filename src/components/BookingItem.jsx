@@ -1,20 +1,29 @@
 "use client";
 
 import Button from "./Button";
-import {BookingContext} from "@/contexts/BookingContext";
+import {
+  BookingContext,
+  BookingContextProvider,
+} from "@/contexts/BookingContext";
 import {useRouter} from "next/navigation";
 
 /**
  * @typedef {Object} BookingItemProps
- * @property {string} id
+ * @property {number} id
  * @property {string} name
+ * @property {string} shortDescription
  * @property {string} description
  */
 
 /**
  * @param {BookingItemProps} props
  */
-export default function BookingItem({id, name, description}) {
+export default function BookingItem({
+  id,
+  name,
+  short_description: shortDescription,
+  description,
+}) {
   const router = useRouter();
 
   function handleClick() {
@@ -22,16 +31,17 @@ export default function BookingItem({id, name, description}) {
   }
 
   return (
-    <BookingContext.Provider value={{name, description}}>
+    <BookingContextProvider value={{name, shortDescription, description}}>
       <li>
         <article className="border-2 border-dotted rounded my-5 p-2">
           <h1>{name}</h1>
-          <p>{description}</p>
+          <h2>{shortDescription}</h2>
+          <p className="whitespace-pre-line">{description}</p>
           <div>
             <Button onClick={handleClick}>Book</Button>
           </div>
         </article>
       </li>
-    </BookingContext.Provider>
+    </BookingContextProvider>
   );
 }
