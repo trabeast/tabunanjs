@@ -1,8 +1,7 @@
 /** Parse a postgresql range into a javascript object */
 
-const _dateRe = "(\\d{4}-(?:0|[012])[0-9]-(?:0|[0123])[0-9])"; // TODO: fix this to accept
-// correct number of days in
-// each month.
+const _dateRe =
+  "(\\d{4}-(?:(?:(?:0[13578]|1[02])-(?:0[1-9]|[12][0-9]|[3][01]))|(?:(?:0[469]|11)-(?:0[1-9]|[12][0-9]|30))|(?:02-(?:0[1-9]|[12][0-9]|30))))";
 const _lowerBoundRe = "^(\\(|\\[)";
 const _upperBoundRe = "(\\)|\\])$";
 
@@ -11,8 +10,8 @@ const _upperBoundRe = "(\\)|\\])$";
  * @property {string} dateRange
  * @property {Date} from
  * @property {Date} to
- * @property {"inclusive" | "exclusive"} lowerBound
- * @property {"inclusive" | "exclusive"} upperBound
+ * @property {"inclusive" | "exclusive" | undefined} lowerBound
+ * @property {"inclusive" | "exclusive" | undefined} upperBound
  *
  * @param {string} range - should be a postgresql range format
  * e.g. [2019-01-01,2019-01-31)
@@ -25,17 +24,30 @@ export function parseDateRange(range) {
   );
 
   try {
-    const [dateRange, lowerBoundSym, from, to, upperBoundSym] = Array.from(
-      ...range.matchAll(regexp),
-    );
+    const [dateRange, lowerBoundSym, fromStr, toStr, upperBoundSym] =
+      Array.from(...range.matchAll(regexp));
+
+    const bounds = (sym) => {
+      switch (sym) {
+        case "[":
+        case "]":
+          return "inclusive";
+        case "(":
+        case ")":
+          return "exclusive";
+        default:
+          return undefined;
+      }
+    };
+
     return {
       dateRange,
-      from,
-      to,
-      lowerBound: lowerBoundSym === "[" ? "inclusive" : "exclusive",
-      upperBound: upperBoundSym === "]" ? "inclusive" : "exclusive",
+      from: new Date(...fromStr.split("-")),
+      to: new Date(...toStr.split("-")),
+      lowerBound: bounds(lowerBoundSym),
+      upperBound: bounds(upperBoundSym),
     };
   } catch {
-    throw new Error(`Invalid date range: ${range}`);
+    throw new Error(`Invalid date range or date: ${range}`);
   }
 }
