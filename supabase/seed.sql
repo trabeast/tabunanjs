@@ -27,3 +27,4 @@ values(
   (select id from cabins where name = 'Wrath'),
   '[2023-10-01 00:00, 2023-10-05 00:00]'
 );
+

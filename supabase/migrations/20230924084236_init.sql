@@ -18,3 +18,4 @@ create table cabin_reservations (
   foreign key (cabin_id) references cabins(id),
   exclude using gist (dates with &&)
 );
+
