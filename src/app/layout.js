@@ -1,7 +1,7 @@
-import Link from "next/link";
 import "./globals.css";
 import "react-day-picker/dist/style.css";
 import {Inter} from "next/font/google";
+import Navigation from "@/components/Navigation";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -14,13 +14,7 @@ export default function RootLayout({children}) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav className="mx-5">
-          <ul>
-            <li>
-              <Link href={"/"}>Tabunan</Link>
-            </li>
-          </ul>
-        </nav>
+        <Navigation></Navigation>
         {children}
       </body>
     </html>

@@ -2,8 +2,7 @@
 
 import {DayPicker} from "react-day-picker";
 import Button from "./Button";
-import Input from "./Input";
-import {useRef, useReducer} from "react";
+import {useReducer} from "react";
 import {useRouter} from "next/navigation";
 import {DateRange} from "react-day-picker";
 import {addDays} from "date-fns";
@@ -18,7 +17,7 @@ function getToday() {
 function getInitDisabled() {
   return [
     {before: getToday()},
-    {from: addDays(getToday(), 3), to: addDays(getToday(), 5)},
+    {from: addDays(getToday(), 20), to: addDays(getToday(), 25)},
   ];
 }
 
@@ -72,13 +71,8 @@ function reducer(state, action) {
  * @param {BookingFormProps} props
  */
 export default function BookingForm(props) {
-  console.log("Render Booking Form");
-
   const router = useRouter();
-
   const [state, dispatch] = useReducer(reducer, initState);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
 
   return (
     <form
@@ -86,19 +80,6 @@ export default function BookingForm(props) {
       {...props}
       autoComplete="off"
     >
-      <Input
-        type="email"
-        placeholder="user@sample.com"
-        autoComplete="off"
-        autoFocus="true"
-      ></Input>
-      <br />
-      <Input
-        type="password"
-        autoComplete="off"
-        placeholder="enter your password"
-      ></Input>
-      <br />
       <DayPicker
         mode="range"
         selected={state.selected}
@@ -106,9 +87,8 @@ export default function BookingForm(props) {
         disabled={state.disabled}
       ></DayPicker>
       <br />
-
-      <div className="float-right">
-        <Button>
+      <div className="float-left">
+        <Button type="submit">
           <span>Continue</span>
         </Button>
         <Button onClick={() => router.back()}>

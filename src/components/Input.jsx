@@ -1,9 +1,23 @@
+const {forwardRef} = require("react");
+
 /**
- * @type {{props: React.InputHTMLAttributes}} InputProps
+ * @typedef {Object} InputPropsExt
+ * @property {string} label
+ *
+ * @typedef {{props: React.InputHTMLAttributes} & InputPropsExt} InputProps
  * @param {InputProps} props
  */
-export default function Input(props) {
+const Input = forwardRef(function Input({label, ...props}, ref) {
   return (
-    <input className="border text-black rounded bg-gray m-2 px-2" {...props} />
+    <>
+      <label className="block" htmlFor={props.name}>{`${label}:`}</label>
+      <input
+        ref={ref}
+        className="border text-black rounded bg-gray m-2 px-2"
+        {...props}
+      />
+    </>
   );
-}
+});
+
+export default Input;
