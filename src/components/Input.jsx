@@ -1,7 +1,10 @@
 const {forwardRef} = require("react");
 
 /**
- * @type {{props: React.InputHTMLAttributes} & {label: string}} InputProps
+ * @typedef {Object} InputPropsExt
+ * @property {string} label
+ *
+ * @typedef {{props: React.InputHTMLAttributes} & InputPropsExt} InputProps
  * @param {InputProps} props
  */
 const Input = forwardRef(function Input({label, ...props}, ref) {
