@@ -1,4 +1,3 @@
-import Link from "next/link";
 import "./globals.css";
 import "react-day-picker/dist/style.css";
 import {Inter} from "next/font/google";

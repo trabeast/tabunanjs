@@ -4,6 +4,7 @@ export default function Navigation() {
   const links = [
     {name: "tabunan", displayName: "tabunan", href: "/"},
     {name: "signin", displayName: "Sign in", href: "/sign-in"},
+    {name: "signup", displayName: "Sign up", href: "/sign-up"},
   ];
 
   return (
