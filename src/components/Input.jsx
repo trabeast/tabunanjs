@@ -7,7 +7,7 @@ const {forwardRef} = require("react");
  * @typedef {{props: React.InputHTMLAttributes} & InputPropsExt} InputProps
  * @param {InputProps} props
  */
-const Input = forwardRef(function Input({label, ...props}, ref) {
+const Input = forwardRef(({label, ...props}, ref) => {
   return (
     <>
       <label className="block" htmlFor={props.name}>{`${label}:`}</label>

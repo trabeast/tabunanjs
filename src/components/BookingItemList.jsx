@@ -19,7 +19,7 @@ function fetchCabins() {
   return serverComponentClient.from("cabins").select();
 }
 
-export default async function BookingItemList() {
+const BookingItemList = async () => {
   const {data, error} = await fetchCabins();
 
   return (
@@ -35,4 +35,6 @@ export default async function BookingItemList() {
       ))}
     </ul>
   );
-}
+};
+
+export default BookingItemList;

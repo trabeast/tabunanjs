@@ -8,7 +8,7 @@ import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 
-export default function SignInForm() {
+const SignInForm = () => {
   const router = useRouter();
 
   /**
@@ -72,4 +72,6 @@ export default function SignInForm() {
       </section>
     </>
   );
-}
+};
+
+export default SignInForm;

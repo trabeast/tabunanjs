@@ -70,7 +70,7 @@ function reducer(state, action) {
  *
  * @param {BookingFormProps} props
  */
-export default function BookingForm(props) {
+const BookingForm = (props) => {
   const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initState);
 
@@ -97,4 +97,6 @@ export default function BookingForm(props) {
       </div>
     </form>
   );
-}
+};
+
+export default BookingForm;
