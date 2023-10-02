@@ -22,12 +22,10 @@ export default async function RootLayout({children}) {
     },
   } = await supabase.auth.getSession();
 
-  console.log(user);
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navigation></Navigation>
+        <Navigation user={user}></Navigation>
         {children}
       </body>
     </html>
