@@ -1,18 +1,18 @@
 "use client";
 
 import {useRef, useState} from "react";
-import {useRouter} from "next/navigation";
 import Input from "./Input";
 import Button from "./Button";
 import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
+import {useRouter} from "next/navigation";
 
 const supabase = createClientComponentClient();
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const router = useRouter();
 
   /**
-   * @typedef {'init' | 'sent' | 'error'} State
+   * @typedef {'init' | 'sent' | 'success' | 'error'} State
    * @type {[State, (state: State) => void]}
    */
   const [state, setState] = useState("init");
@@ -20,21 +20,25 @@ const SignInForm = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  async function signIn() {
+  async function signUp() {
     setState("sent");
-    const {error} = await supabase.auth.signInWithPassword({
+    const {error} = await supabase.auth.signUp({
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
+      options: {
+        emailRedirectTo: process.env.NEXT_PUBLIC_EMAIL_REDIRECT_TO,
+      },
     });
-    error ? setState("error") : router.back();
+    error ? setState("error") : setState("success");
   }
 
-  const disabled = state === "sent";
+  const disabled = state === "sent" || state === "success";
 
   return (
     <>
       <section className="m-5">
         <form onSubmit={(e) => e.preventDefault()}>
+          <legend>Create Account</legend>
           <fieldset className="grid grid-cols-2 w-2/3">
             <Input
               label="Email"
@@ -56,8 +60,8 @@ const SignInForm = () => {
               disabled={disabled}
             ></Input>
           </fieldset>
-          <Button type="submit" onClick={signIn} disabled={disabled}>
-            <span>Sign In</span>
+          <Button type="submit" onClick={signUp} disabled={disabled}>
+            <span>Sign Up</span>
           </Button>
           <Button onClick={() => router.back()} disabled={disabled}>
             <span>Cancel</span>
@@ -65,13 +69,12 @@ const SignInForm = () => {
         </form>
       </section>
       <section className="m-5">
-        <span>Not a user?</span>
-        <Button onClick={() => router.push("/sign-up")}>
-          <span>Sign Up</span>
-        </Button>
+        {state === "success" && (
+          <span>We have sent an email confirmation for your account!</span>
+        )}
       </section>
     </>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

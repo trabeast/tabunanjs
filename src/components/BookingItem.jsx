@@ -18,12 +18,12 @@ import {useRouter} from "next/navigation";
 /**
  * @param {BookingItemProps} props
  */
-export default function BookingItem({
+const BookingItem = ({
   id,
   name,
   short_description: shortDescription,
   description,
-}) {
+}) => {
   const router = useRouter();
 
   return (
@@ -40,4 +40,6 @@ export default function BookingItem({
       </li>
     </BookingContextProvider>
   );
-}
+};
+
+export default BookingItem;
