@@ -1,4 +1,5 @@
 import Link from "next/link";
+import UserProfile from "./UserProfile";
 
 /**
   * @typedef {Object} User
@@ -32,7 +33,11 @@ export default function Navigation({user}) {
       <ul>
         {links.map(({name, displayName, href, position}) => (
           <li className={`inline-block float-${position}`} key={name}>
-            <Link href={href}>{displayName}</Link>
+            {name === "user" ? (
+              <UserProfile>{displayName}</UserProfile>
+            ) : (
+              <Link href={href}>{displayName}</Link>
+            )}
           </li>
         ))}
       </ul>
