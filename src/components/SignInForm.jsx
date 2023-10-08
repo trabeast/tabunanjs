@@ -26,7 +26,13 @@ const SignInForm = () => {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     });
-    error ? setState("error") : router.back();
+
+    if (error) {
+      setState("error");
+    } else {
+      router.back();
+      router.refresh();
+    }
   }
 
   const disabled = state === "sent";

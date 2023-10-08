@@ -7,6 +7,7 @@ import {useRouter} from "next/navigation";
 import {DateRange} from "react-day-picker";
 import {addDays} from "date-fns";
 import disableDatesForInvalidRange from "./helpers/disableDatesForInvalidRange";
+import {parseDateRange} from "./helpers/psqlRange";
 
 /** @returns {Date} */
 function getToday() {
