@@ -16,8 +16,10 @@ export const metadata = {
 const supabase = createServerComponentClient({cookies});
 
 export default async function RootLayout({children}) {
-  const {data} = await supabase.auth.getSession();
-  const user = data.session?.user;
+  const {
+    data: {session},
+  } = await supabase.auth.getSession();
+  const user = session?.user;
 
   return (
     <html lang="en">

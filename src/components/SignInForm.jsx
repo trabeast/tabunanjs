@@ -6,8 +6,6 @@ import Input from "./Input";
 import Button from "./Button";
 import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 
-const supabase = createClientComponentClient();
-
 const SignInForm = () => {
   const router = useRouter();
 
@@ -20,6 +18,7 @@ const SignInForm = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  const supabase = createClientComponentClient();
   async function signIn() {
     setState("sent");
     const {error} = await supabase.auth.signInWithPassword({

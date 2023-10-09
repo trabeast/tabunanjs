@@ -6,8 +6,6 @@ import Button from "./Button";
 import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 import {useRouter} from "next/navigation";
 
-const supabase = createClientComponentClient();
-
 const SignUpForm = () => {
   const router = useRouter();
 
@@ -20,13 +18,14 @@ const SignUpForm = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  const supabase = createClientComponentClient();
   async function signUp() {
     setState("sent");
     const {error} = await supabase.auth.signUp({
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
       options: {
-        emailRedirectTo: process.env.NEXT_PUBLIC_EMAIL_REDIRECT_TO,
+        emailRedirectTo: `${location.origin}/${process.env.NEXT_PUBLIC_EMAIL_REDIRECT_TO}`,
       },
     });
     error ? setState("error") : setState("success");
