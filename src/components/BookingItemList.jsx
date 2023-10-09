@@ -1,6 +1,7 @@
 import {Fragment} from "react";
 import BookingItem from "./BookingItem";
-import {serverComponentClient} from "./helpers/client";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
 
 /**
  * @typedef {Object} Cabin
@@ -15,12 +16,10 @@ import {serverComponentClient} from "./helpers/client";
  *
  * @returns {Promise<FetchCabinsResponse>}
  */
-function fetchCabins() {
-  return serverComponentClient.from("cabins").select();
-}
 
 const BookingItemList = async () => {
-  const {data, error} = await fetchCabins();
+  const supabase = createServerComponentClient({cookies});
+  const {data} = await supabase.from("cabins").select();
 
   return (
     <ul>

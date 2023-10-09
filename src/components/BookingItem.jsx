@@ -1,10 +1,7 @@
 "use client";
 
 import Button from "./Button";
-import {
-  BookingContext,
-  BookingContextProvider,
-} from "@/contexts/BookingContext";
+import {BookingContextProvider} from "@/contexts/BookingContext";
 import {useRouter} from "next/navigation";
 
 /**
